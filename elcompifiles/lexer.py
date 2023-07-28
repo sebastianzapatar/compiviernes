@@ -1,7 +1,8 @@
 from re import match
 from elcompifiles.tokens import(
     Token,
-    TokenType
+    TokenType,
+    lookup_token_type
 )
 
 class Lexer:
@@ -20,11 +21,22 @@ class Lexer:
             token=Token(TokenType.PLUS,self._character)
         elif match(r'^$',self._character):
             token=Token(TokenType.EOF,self._character)
+        elif self._is_letter(self._character):
+            literal=self._read_identifier()
+            token_type=lookup_token_type(literal)
+            return Token(token_type,literal)
         else:
             print(self._character)
             token=Token(TokenType.ILLEGAL,self._character)
         self._read_character()
         return token
+    def _is_letter(self,character:str)->bool:
+       return bool(match(r'^[a-záéíóúA-ZÁÉÍÓÚñÑ_]$', character))
+    def _read_identifier(self)->str:
+        initial_position=self._position
+        while self._is_letter(self._character):
+            self._read_character()
+        return self._source[initial_position:self._position]
     def _read_character(self)->None:
         if self._read_position>=len(self._source):
             self._character=''

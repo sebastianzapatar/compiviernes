@@ -29,6 +29,11 @@ class Lexer:
             literal=self._read_number()
             token_type=lookup_token_type(literal)
             return Token(TokenType.INTEGER,literal)
+        elif match(r'^>$', self._character):
+             if self._peek_character() == '=':
+                token = self._make_two_character_token(TokenType.GTE)
+             else:
+                token=Token(TokenType.GT,self._character) 
         else:
             print(self._character)
             token=Token(TokenType.ILLEGAL,self._character)
@@ -60,7 +65,17 @@ class Lexer:
             self._character=self._source[self._read_position]
         self._position=self._read_position
         self._read_position+=1
-        
+    def _peek_character(self) -> str:
+        if self._read_position >= len(self._source):
+            return ''
+        return self._source[self._read_position]
+    
+    def _make_two_character_token(self, token_type: TokenType) -> Token:
+        prefix = self._character
+        self._read_character()
+        suffix = self._character
+        return Token(token_type, f'{prefix}{suffix}')  
+    
     def _skip_whitespace(self) -> None:
         while match(r'^\s$', self._character):
             self._read_character()

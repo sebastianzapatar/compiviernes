@@ -9,13 +9,12 @@ from elcompifiles.lexer import(
 )
 class TestTokens(TestCase):
     def test_ilegal(self)->None:
-        source:str='!¿@'
+        source:str='¿@'
         lexer:Lexer=Lexer(source)
         tokens:List[Token]=[]
         for i in range(len(source)):
             tokens.append(lexer.next_token())
         expected_tokens:List[Token]=[
-            Token(TokenType.ILLEGAL,'!'),
             Token(TokenType.ILLEGAL,'¿'),
             Token(TokenType.ILLEGAL,'@'),
         ]

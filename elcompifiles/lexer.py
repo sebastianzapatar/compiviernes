@@ -16,7 +16,15 @@ class Lexer:
     def next_token(self)->Token:
         self._skip_whitespace()
         if match(r'^=$',self._character):
-            token=Token(TokenType.ASSING,self._character)
+            if self._peek_character()== '=' :
+                token = self._make_two_character_token(TokenType.EQ)
+            else:
+                token=Token(TokenType.ASSING,self._character)
+        elif match(r'^!$',self._character):
+            if self._peek_character()=='=':
+                token = self._make_two_character_token(TokenType.DIF)
+            else:
+                token=Token(TokenType.NEGATION,self._character)
         elif match(r'^\+$',self._character):
             token=Token(TokenType.PLUS,self._character)
         elif match(r'^$',self._character):
@@ -34,6 +42,11 @@ class Lexer:
                 token = self._make_two_character_token(TokenType.GTE)
              else:
                 token=Token(TokenType.GT,self._character) 
+        elif match(r'^<$',self._character):
+            if self._peek_character()== '=' :
+                token = self._make_two_character_token(TokenType.LTE)
+            else:
+                token=Token(TokenType.LT,self._character)
         else:
             print(self._character)
             token=Token(TokenType.ILLEGAL,self._character)

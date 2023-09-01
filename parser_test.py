@@ -12,7 +12,8 @@ from elcompifiles.ast import (
     LetStatement,
     Statement,
     Expression,
-    Program
+    Program,
+    ReturnStatement
     
 )
 class ParserTest(TestCase):
@@ -63,3 +64,26 @@ class ParserTest(TestCase):
         expected_names: List[str] = ['x', 'y', 'foo']
 
         self.assertEquals(names, expected_names)
+    
+    def test_parse_errors(self)-> None:
+        source:str='variable x 5;'
+        lexer:Lexer=Lexer(source)
+        parser:Parser=Parser(lexer)
+        program:Program=parser.parse_program()
+
+        self.assertEqual(len(parser.errors),1)
+
+    def test_return_statament(self)-> None:
+        source:str=''' 
+            regresa 5;
+            regresa foo;
+        '''
+        lexer:Lexer=Lexer(source)
+        parser:Parser=Parser(lexer)
+        program:Program=parser.parse_program()
+
+        self.assertEqual(len(program.statements),2)
+
+        for statemen in program.statements:
+            self.assertEqual(statemen.token_literal(),'regresa')
+            self.assertIsInstance(statemen,ReturnStatement)

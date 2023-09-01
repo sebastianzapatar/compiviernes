@@ -31,6 +31,7 @@ class TokenType(Enum):
     NEGATION=auto()
     PLUS=auto()
     RBRACE=auto()
+    RETURN=auto()
     RPAREN=auto()
     SEMICOLON=auto()
 
@@ -45,6 +46,7 @@ def lookup_token_type(literal:str)->TokenType:
         'funcion':TokenType.FUNCTION,
         'variable':TokenType.LET,
         'si':TokenType.IF,
-        'si_no':TokenType.ELSE
+        'si_no':TokenType.ELSE,
+        'regresa':TokenType.RETURN
     }
     return keywords.get(literal,TokenType.IDENTIFIER)

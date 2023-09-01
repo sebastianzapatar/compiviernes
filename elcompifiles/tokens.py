@@ -12,9 +12,11 @@ class TokenType(Enum):
     ASSING=auto()
     COMMA=auto()
     DIF=auto()
+    DIVISION=auto()
     ELSE=auto()
     EOF = auto()
     EQ=auto()
+    FALSE=auto()
     FUNCTION=auto()
     IDENTIFIER=auto()
     IF=auto()
@@ -28,12 +30,14 @@ class TokenType(Enum):
     LT=auto()
     LTE=auto()
     MINUS=auto()
+    MULTIPLICATION=auto()
     NEGATION=auto()
     PLUS=auto()
     RBRACE=auto()
     RETURN=auto()
     RPAREN=auto()
     SEMICOLON=auto()
+    TRUE=auto()
 
 
 class Token(NamedTuple):
@@ -47,6 +51,8 @@ def lookup_token_type(literal:str)->TokenType:
         'variable':TokenType.LET,
         'si':TokenType.IF,
         'si_no':TokenType.ELSE,
-        'regresa':TokenType.RETURN
+        'regresa':TokenType.RETURN,
+        'verdadero':TokenType.TRUE,
+        'falso':TokenType.FALSE
     }
     return keywords.get(literal,TokenType.IDENTIFIER)

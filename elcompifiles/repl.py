@@ -1,6 +1,7 @@
 from elcompifiles.lexer import Lexer
 from elcompifiles.parser import Parser
 from elcompifiles.ast import Program
+from elcompifiles.evaluator import evaluate
 from elcompifiles.tokens import(
     Token,
     TokenType
@@ -11,6 +12,8 @@ def star_repel()->None:
         lexer:Lexer=Lexer(source)
         parser:Parser=Parser(lexer)
         program:Program=parser.parse_program()
+        evaluated=evaluate(program)
 
-        print(program)
+        if(evaluated is not None):
+            print(evaluated.inspect())
 
